@@ -12,6 +12,7 @@ export function ConfirmDialog({
   loading,
   title,
   text,
+  confirmLabel,
 }: {
   open: boolean;
   onClose: () => void;
@@ -19,6 +20,7 @@ export function ConfirmDialog({
   loading?: boolean;
   title?: string;
   text?: string;
+  confirmLabel?: string;
 }) {
   const { t } = useI18n();
   return (
@@ -38,7 +40,7 @@ export function ConfirmDialog({
             {t.common.cancel}
           </Button>
           <Button variant="danger" onClick={onConfirm} loading={loading}>
-            {t.common.delete}
+            {confirmLabel ?? t.common.delete}
           </Button>
         </>
       }

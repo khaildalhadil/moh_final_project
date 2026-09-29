@@ -7,8 +7,15 @@ import { StatusBadge } from "@/components/status";
 import { FIELD_STATUSES, IRRIGATION_METHODS, SOIL_TYPES } from "@/lib/constants";
 import { enumLabel, enumOptions } from "@/lib/enums";
 import { useI18n } from "@/lib/i18n/provider";
+import { select, useData } from "@/lib/store";
 import type { FarmOption, Field } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
+
+/** Page entry: reads the data from the local store. */
+export function FieldsScreen() {
+  const { db } = useData();
+  return <FieldsView rows={select.fields(db)} farms={select.farmOptions(db)} />;
+}
 
 export function FieldsView({ rows, farms }: { rows: Field[]; farms: FarmOption[] }) {
   const { t, locale } = useI18n();

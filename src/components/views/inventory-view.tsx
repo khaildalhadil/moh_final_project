@@ -9,11 +9,18 @@ import { StatCard } from "@/components/ui/misc";
 import { INVENTORY_CATEGORIES, INVENTORY_UNITS } from "@/lib/constants";
 import { enumLabel, enumOptions } from "@/lib/enums";
 import { useI18n } from "@/lib/i18n/provider";
+import { select, useData } from "@/lib/store";
 import type { InventoryItem } from "@/lib/types";
 import { formatCurrency, formatNumber, num } from "@/lib/utils";
 
 const isLow = (i: InventoryItem) => i.min_quantity != null && num(i.quantity) <= num(i.min_quantity);
 const value = (i: InventoryItem) => num(i.quantity) * num(i.unit_cost);
+
+/** Page entry: reads the data from the local store. */
+export function InventoryScreen() {
+  const { db } = useData();
+  return <InventoryView rows={select.inventory(db)} />;
+}
 
 export function InventoryView({ rows }: { rows: InventoryItem[] }) {
   const { t, locale } = useI18n();

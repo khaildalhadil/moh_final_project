@@ -8,7 +8,7 @@ import { Card } from "@/components/ui/card";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Input, Select } from "@/components/ui/form";
 import { EmptyState, PageHeader } from "@/components/ui/misc";
-import { deleteRecord } from "@/lib/actions/records";
+import { deleteRecord } from "@/lib/store";
 import { fmt } from "@/lib/i18n";
 import { useI18n } from "@/lib/i18n/provider";
 import type { TableName } from "@/lib/validations";

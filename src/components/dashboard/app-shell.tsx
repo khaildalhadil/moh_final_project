@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { Bell, Droplets, Ellipsis, LogOut, Menu, Package, Settings, Sprout, TriangleAlert, X } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { LocaleToggle, ThemeToggle } from "@/components/preferences";
-import { signOut } from "@/lib/actions/auth";
+import { signOut } from "@/lib/store";
 import { fmt } from "@/lib/i18n";
 import { useI18n } from "@/lib/i18n/provider";
 import { cn } from "@/lib/utils";
@@ -132,16 +132,15 @@ function SidebarContent() {
               {user.email}
             </p>
           </div>
-          <form action={signOut}>
-            <button
-              type="submit"
+          <button
+              type="button"
+              onClick={signOut}
               className="grid size-9 place-items-center rounded-lg text-muted-foreground hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/50"
               aria-label={t.nav.logout}
               title={t.nav.logout}
             >
               <LogOut className="size-[18px] rtl:rotate-180" />
             </button>
-          </form>
         </div>
       </div>
     </>
@@ -288,15 +287,14 @@ function UserMenu() {
               <Settings className="size-4 text-muted-foreground" />
               {t.nav.settings}
             </Link>
-            <form action={signOut}>
-              <button
-                type="submit"
+            <button
+                type="button"
+                onClick={signOut}
                 className="flex h-10 w-full items-center gap-3 rounded-xl px-3 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-950/50"
               >
                 <LogOut className="size-4 rtl:rotate-180" />
                 {t.nav.logout}
               </button>
-            </form>
           </div>
         </div>
       )}

@@ -4,7 +4,7 @@ import { useTransition } from "react";
 import { toast } from "sonner";
 import { Database } from "lucide-react";
 import { Button, type ButtonVariant } from "@/components/ui/button";
-import { loadDemoData } from "@/lib/actions/demo";
+import { loadDemoData } from "@/lib/store";
 import { useI18n } from "@/lib/i18n/provider";
 
 export function DemoDataButton({ variant = "primary" }: { variant?: ButtonVariant }) {

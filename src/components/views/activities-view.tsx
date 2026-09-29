@@ -10,7 +10,7 @@ import { StatusBadge } from "@/components/status";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { StatCard, Truncate } from "@/components/ui/misc";
-import { setStatus } from "@/lib/actions/records";
+import { select, setStatus, useData } from "@/lib/store";
 import { ACTIVITY_STATUSES, ACTIVITY_TYPES, PRIORITIES } from "@/lib/constants";
 import { enumLabel, enumOptions } from "@/lib/enums";
 import { useI18n } from "@/lib/i18n/provider";
@@ -18,6 +18,12 @@ import type { Activity, FarmOption, FieldOption } from "@/lib/types";
 import { formatCurrency, formatDate, formatNumber } from "@/lib/utils";
 
 const isOpen = (a: Pick<Activity, "status">) => a.status === "pending" || a.status === "in_progress";
+
+/** Page entry: reads the data from the local store. */
+export function ActivitiesScreen() {
+  const { db } = useData();
+  return <ActivitiesView rows={select.activities(db)} farms={select.farmOptions(db)} fields={select.fieldOptions(db)} />;
+}
 
 export function ActivitiesView({ rows, farms, fields }: { rows: Activity[]; farms: FarmOption[]; fields: FieldOption[] }) {
   const { t, locale } = useI18n();

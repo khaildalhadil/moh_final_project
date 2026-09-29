@@ -8,7 +8,7 @@ import {
   Droplets,
   Languages,
   Package,
-  ShieldCheck,
+  Zap,
   Smartphone,
   Sparkles,
   Sprout,
@@ -20,7 +20,8 @@ import { LocaleToggle, ThemeToggle } from "@/components/preferences";
 import { buttonVariants } from "@/components/ui/button";
 import { getI18n } from "@/lib/i18n/server";
 import { projectInfo } from "@/lib/site";
-import { getCurrentUser } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
+import { SESSION_COOKIE } from "@/lib/session";
 
 const featureIcons = [Sprout, Droplets, ClipboardList, CloudSun, Package, ChartColumn];
 const featureTones = [
@@ -34,7 +35,7 @@ const featureTones = [
 
 export default async function LandingPage() {
   const { t, locale } = await getI18n();
-  const user = await getCurrentUser();
+  const user = (await cookies()).has(SESSION_COOKIE);
   const Arrow = locale === "ar" ? ArrowLeft : ArrowRight;
 
   return (
@@ -130,7 +131,7 @@ export default async function LandingPage() {
               { icon: LandPlot, label: t.landing.statFields },
               { icon: Languages, label: t.landing.statLanguages },
               { icon: Smartphone, label: t.landing.statDevices },
-              { icon: ShieldCheck, label: t.landing.statSecure },
+              { icon: Zap, label: t.landing.statSecure },
             ].map(({ icon: Icon, label }) => (
               <div key={label} className="flex items-center gap-3">
                 <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300">

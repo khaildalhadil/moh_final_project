@@ -10,12 +10,18 @@ import { StatusBadge } from "@/components/status";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { StatCard, Truncate } from "@/components/ui/misc";
-import { setStatus } from "@/lib/actions/records";
+import { select, setStatus, useData } from "@/lib/store";
 import { IRRIGATION_METHODS, IRRIGATION_STATUSES } from "@/lib/constants";
 import { enumLabel, enumOptions } from "@/lib/enums";
 import { useI18n } from "@/lib/i18n/provider";
 import type { FarmOption, FieldOption, IrrigationSchedule } from "@/lib/types";
 import { addDaysISO, formatDate, formatNumber, formatTime, num } from "@/lib/utils";
+
+/** Page entry: reads the data from the local store. */
+export function IrrigationScreen() {
+  const { db } = useData();
+  return <IrrigationView rows={select.irrigation(db)} fields={select.fieldOptions(db)} farms={select.farmOptions(db)} />;
+}
 
 export function IrrigationView({
   rows,

@@ -18,10 +18,12 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/misc";
 import { fmt } from "@/lib/i18n";
 import { useI18n } from "@/lib/i18n/provider";
 import { cn, formatDate } from "@/lib/utils";
-import type { WeatherData, WeatherGroup } from "@/lib/weather";
+import { useWeather } from "@/lib/use-weather";
+import type { WeatherGroup } from "@/lib/weather";
 
 const icons: Record<WeatherGroup, LucideIcon> = {
   clear: Sun,
@@ -40,8 +42,15 @@ const advisoryStyle = {
   low: "border-brand-200 bg-brand-50 text-brand-900 dark:border-brand-900 dark:bg-brand-950 dark:text-brand-100",
 };
 
-export function WeatherCard({ farmName, weather }: { farmName: string | null; weather: WeatherData | null }) {
+type WeatherCardProps = {
+  farmName: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+};
+
+export function WeatherCard({ farmName, latitude, longitude }: WeatherCardProps) {
   const { t, locale } = useI18n();
+  const { loading, data: weather } = useWeather(farmName ? latitude : null, farmName ? longitude : null);
 
   if (!farmName) {
     return (
@@ -56,6 +65,18 @@ export function WeatherCard({ farmName, weather }: { farmName: string | null; we
               {t.nav.farms} →
             </Link>
           </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (loading) {
+    return (
+      <Card className="h-full overflow-hidden">
+        <Skeleton className="h-48 rounded-none" />
+        <CardContent className="space-y-3">
+          <Skeleton className="h-12" />
+          <Skeleton className="h-20" />
         </CardContent>
       </Card>
     );

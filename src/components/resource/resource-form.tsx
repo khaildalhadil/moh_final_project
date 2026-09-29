@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { FieldError, Input, Label, Select, Textarea } from "@/components/ui/form";
 import { Modal } from "@/components/ui/modal";
-import { saveRecord } from "@/lib/actions/records";
+import { saveRecord } from "@/lib/store";
 import { useI18n } from "@/lib/i18n/provider";
 import type { TableName } from "@/lib/validations";
 import { cn } from "@/lib/utils";

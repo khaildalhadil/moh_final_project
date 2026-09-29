@@ -10,7 +10,7 @@ import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { EmptyState, PageHeader } from "@/components/ui/misc";
 import { ResourceForm, toFormValues, type FieldDef, type FormValues } from "@/components/resource/resource-form";
 import { useCreateParam } from "@/components/resource/use-create-param";
-import { deleteRecord } from "@/lib/actions/records";
+import { deleteRecord, select, useData } from "@/lib/store";
 import { useI18n } from "@/lib/i18n/provider";
 import type { Dictionary } from "@/lib/i18n";
 import type { Farm } from "@/lib/types";
@@ -62,6 +62,20 @@ export function LocateButton({ setValues }: { setValues: (patch: Partial<FormVal
       {locating ? t.farms.locating : t.farms.useMyLocation}
     </Button>
   );
+}
+
+/** Page entry: farms from the local store with field/crop counts. */
+export function FarmsScreen() {
+  const { db } = useData();
+  const fieldFarm = new Map(db.fields.map((f) => [f.id, f.farm_id]));
+  const farms = select.farms(db).map((farm) => ({
+    ...farm,
+    fieldsCount: db.fields.filter((f) => f.farm_id === farm.id).length,
+    activeCrops: db.crops.filter(
+      (c) => fieldFarm.get(c.field_id) === farm.id && (c.status === "planted" || c.status === "growing"),
+    ).length,
+  }));
+  return <FarmsView farms={farms} />;
 }
 
 export function FarmsView({ farms }: { farms: FarmWithStats[] }) {

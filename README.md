@@ -43,37 +43,12 @@ A web platform that helps farmers organise crop data, schedule irrigation, and t
 
 ## Running the system for the first time
 
+Hasad needs **no database and no configuration**. All data is kept in the browser, and a ready-made demo farm is loaded from a seed file.
+
 ### Requirements
 - **Node.js** version 20.9 or newer — [nodejs.org](https://nodejs.org)
-- A free **Supabase** account — [supabase.com](https://supabase.com) (this is the database)
 
-### Step 1: Create the database in Supabase
-1. Sign in to Supabase, click **New project**, choose a name and a database password, and wait until the project is ready.
-2. From the side menu open **SQL Editor** → **New query**.
-3. Open the file [`supabase/schema.sql`](supabase/schema.sql) from this project, copy **all** of it, paste it and click **Run**. You should see *Success*.
-4. Under **Authentication** → **URL Configuration**:
-   - **Site URL**: `http://localhost:3000`
-   - **Redirect URLs**: add `http://localhost:3000/auth/callback`
-5. *(Optional, for quick testing)* Under **Authentication** → **Sign In / Providers** → **Email**, turn off **Confirm email** so new users are signed in right after registering.
-
-### Step 2: Connect the app to the database
-1. In Supabase open **Project Settings** → **API** (or the **Connect** button) and copy:
-   - the **Project URL**
-   - the **anon / publishable key**
-2. In the project folder, copy `.env.example` to a new file named `.env.local`:
-
-```bash
-cp .env.example .env.local
-```
-
-3. Open `.env.local` and fill in the values:
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=https://xxxxxxxx.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOi...
-```
-
-### Step 3: Run
+### Run
 Open a terminal inside the `agri-farm-system` folder and run this once:
 
 ```bash
@@ -88,7 +63,16 @@ npm run dev
 
 Open **http://localhost:3000** in your browser 🎉
 
-> 💡 If the sign-in page shows a yellow message *"Supabase is not configured yet"*, the `.env.local` file is missing or its values are wrong. Fix it, then restart `npm run dev`.
+### Sign in with the demo account
+On the sign-in page, click **"Sign in with the demo account"** — or type:
+
+| Email | Password |
+|---|---|
+| `demo@hasad.app` | `hasad2026` |
+
+The demo account already contains two farms with fields, crops, irrigation schedules, activities and inventory, so every page has data to explore.
+
+> 💾 **Where is the data saved?** In the browser's local storage (`localStorage`). Your changes are kept after closing the browser, but they belong to that browser only — another browser or device starts from the demo data again. The starting data comes from [`src/data/seed.ts`](src/data/seed.ts).
 
 ---
 
@@ -108,7 +92,7 @@ Inventory is independent and can be added at any time
 - You cannot add a **crop** or an **irrigation schedule** before a **field** exists.
 - **Deleting a farm** also deletes all of its fields, crops, irrigation schedules and activities.
 
-> ⚡ **Fastest way to try it:** after creating your account, click **"Load demo data"** on the dashboard. Hasad adds two farms with fields, crops, irrigation, activities and inventory so you can explore every page immediately.
+> ⚡ **Fastest way to try it:** sign in with the **demo account** — it already has data. A new account starts empty; click **"Load demo data"** on its dashboard to add the sample farms.
 
 ---
 
@@ -119,17 +103,16 @@ The first page of the site. It introduces the system and its features, with butt
 
 ![Landing page](docs/screenshots/en/landing.jpg)
 
-### 2. Creating an account and signing in
+### 2. Signing in and creating an account
 
 ![Sign in](docs/screenshots/en/login.jpg)
 
-- **Create account:** enter your full name, email, phone (optional), and a password of at least **8 characters**, twice.
-  - If email confirmation is enabled in Supabase you will receive an email; open the link, then sign in.
+- **Demo account:** the green box on the sign-in page signs you in with one click (`demo@hasad.app` / `hasad2026`).
+- **Create account:** enter your full name, email, phone (optional), and a password of at least **8 characters**, twice. A new account starts with no data.
 - **Sign in:** email + password. The 👁 icon shows the password.
-- **Forgot password?** Enter your email and you will receive a link to choose a new password.
 - **Sign out:** the exit icon at the bottom of the side menu, or from your avatar at the top of the page.
 
-> Each user sees only their own data — no other account can see or change your farms.
+> Accounts and data are stored in this browser. Each account only sees its own farms.
 
 ### 3. Dashboard
 
@@ -261,6 +244,7 @@ Every job on the farm (plowing, planting, fertilizing, spraying, weeding, prunin
 - **Profile:** name, phone and **currency** (SAR, AED, KWD, USD…) — the currency changes on every page.
 - **Preferences:** language (العربية / English) and theme (light / dark / system).
 - **Security:** change your password.
+- **Data:** **Restore demo data** (replace everything with a fresh copy of the seed data) or **Delete all data** (start from scratch). Both ask for confirmation.
 
 ### 12. Notifications 🔔
 The bell icon at the top of the page; the red number is the count of alerts. Clicking it shows:
@@ -326,21 +310,27 @@ The site is designed for phones and needs no app — open the link in your phone
 ## FAQ & troubleshooting
 
 <details>
-<summary><b>I see "Supabase is not configured yet"</b></summary>
+<summary><b>Do I need a database or any setup?</b></summary>
 
-The `.env.local` file is missing or wrong. Check the file name (it starts with a dot) and the values copied from Supabase, then stop the app (`Ctrl + C`) and start it again with `npm run dev`.
+No. Run `npm install` once and `npm run dev`, then sign in with the demo account. Everything is stored in the browser.
 </details>
 
 <details>
-<summary><b>I registered but cannot sign in: "Please confirm your email address first"</b></summary>
+<summary><b>My data disappeared</b></summary>
 
-Open the confirmation email (check your spam folder too), or turn off **Confirm email** in Supabase → Authentication → Sign In / Providers → Email.
+Data is saved per browser. If you open the site in another browser, on another device, in a private window, or after clearing the browser's site data, you start again from the demo data. Use the same browser to keep your changes.
 </details>
 
 <details>
-<summary><b>The email confirmation or password reset link doesn't work</b></summary>
+<summary><b>How do I return to the original demo data?</b></summary>
 
-Make sure `http://localhost:3000/auth/callback` is listed under **Redirect URLs** and that the **Site URL** is `http://localhost:3000` (or your site's address after deployment).
+Go to **Settings → Data → Restore demo data**.
+</details>
+
+<details>
+<summary><b>I forgot the password of an account I created</b></summary>
+
+Accounts are local to the browser, so there is no email reset. Sign in with the demo account instead, or create a new account.
 </details>
 
 <details>
@@ -352,19 +342,13 @@ You need a **farm** before adding fields, and a **field** before adding crops or
 <details>
 <summary><b>The weather doesn't appear on the dashboard</b></summary>
 
-Edit the farm and add its **latitude** and **longitude**, or click **Use my current location**. The weather needs an internet connection.
+The weather needs an internet connection. Also make sure the farm has a **latitude** and **longitude** (edit the farm, or click **Use my current location**).
 </details>
 
 <details>
 <summary><b>"Something went wrong" appears when saving</b></summary>
 
-Make sure you ran the whole `supabase/schema.sql` file in Supabase, filled in the required fields (\*), and that the expected harvest date is after the planting date.
-</details>
-
-<details>
-<summary><b>How do I remove the demo data?</b></summary>
-
-Delete the two demo farms from the **Farms** page (everything linked to them is deleted too), then delete the items on the **Inventory** page.
+Check the required fields (\*), and that the expected harvest date is after the planting date.
 </details>
 
 <details>
@@ -379,8 +363,8 @@ In the file [`src/lib/site.ts`](src/lib/site.ts).
 
 ### Technologies
 - **Next.js 16** (App Router, Server Components, Server Actions, `proxy.ts`) + **React 19** + **TypeScript**
-- **Supabase** (PostgreSQL + Auth + Row Level Security) via `@supabase/ssr`
-- **Tailwind CSS 4**, **Recharts**, **lucide-react**, **zod**, **sonner**, **next-themes**
+- **No database:** a small browser store (`localStorage`) with seed data
+- **Tailwind CSS 4**, **Recharts**, **lucide-react**, **zod** (validation), **sonner**, **next-themes**
 - **Open-Meteo** for weather and geocoding (free, no API key)
 
 ### Scripts
@@ -395,14 +379,13 @@ In the file [`src/lib/site.ts`](src/lib/site.ts).
 ### Project structure
 
 ```
-supabase/schema.sql          ← tables + RLS policies + triggers
-docs/screenshots/            ← screenshots for the guides (en / ar)
+docs/                        ← screenshots (en / ar) and the presentations
 src/
-├─ proxy.ts                  ← session refresh and /dashboard route protection
+├─ proxy.ts                  ← protects /dashboard (redirects to sign-in when signed out)
+├─ data/seed.ts              ← the demo data (farms, fields, crops, irrigation, activities, inventory)
 ├─ app/
 │  ├─ page.tsx               ← landing page
-│  ├─ (auth)/                ← sign in, sign up, forgot/reset password
-│  ├─ auth/callback/         ← handles email links from Supabase
+│  ├─ (auth)/                ← sign in, create account
 │  └─ dashboard/             ← dashboard and all management, reports and settings pages
 ├─ components/
 │  ├─ ui/                    ← shared components (Button, Modal, Card, Badge…)
@@ -410,18 +393,20 @@ src/
 │  ├─ views/                 ← UI for each page (crops, irrigation, activities…)
 │  └─ dashboard/             ← sidebar, top bar, weather, notifications
 └─ lib/
-   ├─ actions/               ← Server Actions (save/delete, auth, profile, demo data)
+   ├─ store.ts               ← local data store: accounts, save/delete, cascades, demo data
    ├─ i18n/                  ← Arabic and English dictionaries
    ├─ validations.ts         ← input validation with zod
-   ├─ weather.ts             ← weather and irrigation advice
-   └─ data.ts / analytics.ts ← data loading and statistics
+   ├─ weather.ts             ← weather and irrigation advice (Open-Meteo)
+   └─ analytics.ts           ← statistics for the dashboard and reports
 ```
 
-### Database
+### Data model
+
+The data is organised like relational tables and saved in the browser under `localStorage` keys (`hasad:users`, `hasad:session`, `hasad:data:<userId>`):
 
 | Table | Description |
 |---|---|
-| `profiles` | User profile (name, phone, currency) — created automatically on sign-up |
+| `users` | Accounts (name, email, phone, currency) — the demo account is created automatically |
 | `farms` | Farms (location, area, coordinates) |
 | `fields` | Fields inside each farm (soil, irrigation system, status) |
 | `crops` | Crops in each field (dates, status, yield) |
@@ -429,14 +414,16 @@ src/
 | `activities` | Activities and tasks (type, priority, cost, assignee) |
 | `inventory_items` | Inventory (category, quantity, minimum, cost) |
 
-**Security:** every table has Row Level Security enabled (each user can only read and change their own rows), an `assert_same_owner` trigger prevents linking a record to another user's farm or field, and all input is validated on the server with zod.
+**Integrity rules** (as a database would enforce): every input is validated with zod, a field must belong to an existing farm, crops and irrigation must belong to an existing field, an activity's field must belong to its farm, and deleting a farm also deletes its fields, crops, irrigation schedules and activities.
+
+> `src/lib/store.ts` is the only place that reads and writes data, so it can later be replaced by a real database (for example PostgreSQL) without changing the pages.
 
 ### Deploying (Vercel)
-1. Push the project to GitHub, then import it at [vercel.com](https://vercel.com).
-2. Add the same environment variables, plus `NEXT_PUBLIC_SITE_URL` with your site's address.
-3. In Supabase, set your site's address as the **Site URL** and add `https://your-site/auth/callback` to **Redirect URLs**.
+Push the project to GitHub, then import it at [vercel.com](https://vercel.com). No environment variables are needed.
 
 ### Customising
+- Demo data: [`src/data/seed.ts`](src/data/seed.ts)
+- Demo account email/password: [`src/lib/session.ts`](src/lib/session.ts)
 - Student, university and supervisor names: [`src/lib/site.ts`](src/lib/site.ts)
 - Texts and translations: [`src/lib/i18n/dictionaries/`](src/lib/i18n/dictionaries/)
 - Colours: [`src/app/globals.css`](src/app/globals.css)

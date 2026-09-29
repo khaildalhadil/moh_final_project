@@ -3,7 +3,6 @@ import { CircleCheck, Droplets, Sprout, Wheat } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { LocaleToggle, ThemeToggle } from "@/components/preferences";
 import { getI18n } from "@/lib/i18n/server";
-import { isSupabaseConfigured } from "@/lib/supabase/env";
 
 export default async function AuthLayout({ children }: { children: React.ReactNode }) {
   const { t } = await getI18n();
@@ -23,12 +22,6 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
 
         <main className="flex flex-1 items-center justify-center px-5 py-10 sm:px-8">
           <div className="w-full max-w-md animate-slide-up">
-            {!isSupabaseConfigured && (
-              <div className="mb-6 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100">
-                <p className="font-semibold">{t.auth.setupRequired}</p>
-                <p className="mt-1 opacity-90">{t.auth.setupRequiredText}</p>
-              </div>
-            )}
             {children}
           </div>
         </main>

@@ -9,7 +9,7 @@ import type { FieldDef } from "@/components/resource/resource-form";
 import { StatusBadge } from "@/components/status";
 import { Button } from "@/components/ui/button";
 import { Progress, StatCard, Truncate } from "@/components/ui/misc";
-import { setStatus } from "@/lib/actions/records";
+import { select, setStatus, useData } from "@/lib/store";
 import { CROP_STATUSES, YIELD_UNITS } from "@/lib/constants";
 import { enumLabel, enumOptions } from "@/lib/enums";
 import { fmt } from "@/lib/i18n";
@@ -27,6 +27,12 @@ export function cropProgress(crop: Pick<Crop, "planting_date" | "expected_harves
 
 export function toKg(value: number | null, unit: string) {
   return num(value) * (unit === "ton" ? 1000 : 1);
+}
+
+/** Page entry: reads the data from the local store. */
+export function CropsScreen() {
+  const { db } = useData();
+  return <CropsView rows={select.crops(db)} fields={select.fieldOptions(db)} farms={select.farmOptions(db)} />;
 }
 
 export function CropsView({ rows, fields, farms }: { rows: Crop[]; fields: FieldOption[]; farms: FarmOption[] }) {

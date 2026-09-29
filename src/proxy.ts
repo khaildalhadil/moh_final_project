@@ -1,13 +1,34 @@
-import type { NextRequest } from "next/server";
-import { updateSession } from "@/lib/supabase/proxy";
+import { NextResponse, type NextRequest } from "next/server";
+import { SESSION_COOKIE } from "@/lib/session";
 
-export async function proxy(request: NextRequest) {
-  return updateSession(request);
+const AUTH_PAGES = ["/login", "/register"];
+
+/**
+ * Route guard based on the session cookie set by the browser store:
+ *  - /dashboard/**  → requires a signed-in user
+ *  - auth pages     → send signed-in users to the dashboard
+ */
+export function proxy(request: NextRequest) {
+  const signedIn = request.cookies.has(SESSION_COOKIE);
+  const { pathname, search } = request.nextUrl;
+
+  if (!signedIn && pathname.startsWith("/dashboard")) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    url.search = `?next=${encodeURIComponent(pathname + search)}`;
+    return NextResponse.redirect(url);
+  }
+
+  if (signedIn && AUTH_PAGES.includes(pathname)) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/dashboard";
+    url.search = "";
+    return NextResponse.redirect(url);
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    // Everything except static files, images and metadata assets
-    "/((?!_next/static|_next/image|favicon.ico|icon|apple-icon|manifest.webmanifest|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
-  ],
+  matcher: ["/dashboard/:path*", "/login", "/register"],
 };

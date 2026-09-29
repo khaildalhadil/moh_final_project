@@ -90,7 +90,7 @@ export function downloadCSV(filename: string, headers: string[], rows: (string |
   URL.revokeObjectURL(url);
 }
 
-/** Supabase returns numeric columns as strings in some cases — normalise them. */
+/** Coerce stored numeric values (which may arrive as strings) to numbers. */
 export function num(value: unknown): number {
   const n = typeof value === "number" ? value : Number(value);
   return Number.isFinite(n) ? n : 0;

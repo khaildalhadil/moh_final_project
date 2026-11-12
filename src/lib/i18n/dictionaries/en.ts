@@ -73,6 +73,7 @@ export const en = {
     logout: "Sign out",
     features: "Features",
     howItWorks: "How it works",
+    videos: "Videos",
     more: "More",
     menu: "Menu",
     groupMain: "Overview",
@@ -92,6 +93,12 @@ export const en = {
     previewIrrigation: "Irrigation — Field A",
     previewTask: "Fertilizing — Wheat",
     previewHarvest: "Harvest in 12 days",
+    videosTitle: "Watch Hasad",
+    videosSubtitle: "A short look at the farm work Hasad is built for, and a 3D tour of the platform.",
+    videos: [
+      { title: "Hasad promo", text: "One minute about the farming work Hasad helps you manage." },
+      { title: "3D farm tour", text: "Fly over a 3D farm and see the platform's pages in place." },
+    ],
     featuresTitle: "Everything your farm needs",
     featuresSubtitle: "Built around the daily work of farmers and agricultural engineers.",
     features: [

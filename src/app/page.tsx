@@ -32,6 +32,10 @@ const featureTones = [
   "bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300",
   "bg-teal-50 text-teal-700 dark:bg-teal-950/60 dark:text-teal-300",
 ];
+const videoFiles = [
+  { src: "/videos/hasad-promo.mp4", poster: "/videos/hasad-promo.jpg" },
+  { src: "/videos/hasad-3d.mp4", poster: "/videos/hasad-3d.jpg" },
+];
 
 export default async function LandingPage() {
   const { t, locale } = await getI18n();
@@ -47,6 +51,9 @@ export default async function LandingPage() {
             <Logo name={t.common.appName} />
           </Link>
           <nav className="ms-6 hidden items-center gap-6 text-sm font-medium text-muted-foreground md:flex">
+            <a href="#videos" className="hover:text-foreground">
+              {t.nav.videos}
+            </a>
             <a href="#features" className="hover:text-foreground">
               {t.nav.features}
             </a>
@@ -139,6 +146,27 @@ export default async function LandingPage() {
                 </span>
                 <span className="text-sm font-medium">{label}</span>
               </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ---------- videos ---------- */}
+        <section id="videos" className="mx-auto max-w-6xl scroll-mt-20 px-4 pt-20 sm:px-6">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{t.landing.videosTitle}</h2>
+            <p className="mt-3 text-muted-foreground">{t.landing.videosSubtitle}</p>
+          </div>
+          <div className="mt-12 grid gap-6 lg:grid-cols-2">
+            {t.landing.videos.map((v, i) => (
+              <figure key={v.title} className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
+                <video controls playsInline preload="metadata" poster={videoFiles[i].poster} className="aspect-video w-full bg-black">
+                  <source src={videoFiles[i].src} type="video/mp4" />
+                </video>
+                <figcaption className="p-5">
+                  <h3 className="text-lg font-semibold">{v.title}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{v.text}</p>
+                </figcaption>
+              </figure>
             ))}
           </div>
         </section>

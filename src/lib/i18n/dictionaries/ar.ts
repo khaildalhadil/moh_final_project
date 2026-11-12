@@ -74,6 +74,7 @@ export const ar: Dictionary = {
     logout: "تسجيل الخروج",
     features: "المميزات",
     howItWorks: "كيف يعمل",
+    videos: "الفيديوهات",
     more: "المزيد",
     menu: "القائمة",
     groupMain: "نظرة عامة",
@@ -92,6 +93,12 @@ export const ar: Dictionary = {
     previewIrrigation: "ري — الحقل (أ)",
     previewTask: "تسميد — القمح",
     previewHarvest: "الحصاد بعد 12 يوم",
+    videosTitle: "شاهد حصاد",
+    videosSubtitle: "لمحة قصيرة عن العمل الزراعي الذي صُمم له حصاد، وجولة ثلاثية الأبعاد في المنصة.",
+    videos: [
+      { title: "الفيديو التعريفي", text: "دقيقة واحدة عن الأعمال الزراعية التي يساعدك حصاد على إدارتها." },
+      { title: "جولة ثلاثية الأبعاد في المزرعة", text: "حلّق فوق مزرعة ثلاثية الأبعاد وشاهد صفحات المنصة في مكانها." },
+    ],
     featuresTitle: "كل ما تحتاجه مزرعتك",
     featuresSubtitle: "مصمم حول العمل اليومي للمزارعين والمهندسين الزراعيين.",
     features: [
